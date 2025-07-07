@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorFinder - Discover Amazing Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .active-filter {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .loader {
+            border-top-color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <img src="https://placehold.co/50x50" alt="Chef's hat with fork and spoon crossed logo" class="mr-3 rounded-full border-2 border-white" />
+                    <h1 class="text-2xl font-bold">FlavorFinder</h1>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-blue-100">Discover delicious recipes tailored to your ingredients</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Find Your Perfect Recipe</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-6">Search by ingredients, dietary needs, or cuisine type. Get inspired and cook something amazing today!</p>
+            
+            <!-- Search Form -->
+            <div class="max-w-2xl mx-auto relative">
+                <form id="searchForm" class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="ingredientsInput" placeholder="Enter ingredients (e.g., chicken, tomatoes...)" 
+                           class="flex-grow px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition duration-200">
+                        Search Recipes
+                    </button>
+                </form>
+                
+                <!-- Advanced Options Toggle -->
+                <div class="mt-4 text-left">
+                    <button id="advancedOptionsToggle" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        + Advanced Options
+                    </button>
+                </div>
+                
+                <!-- Advanced Options Form -->
+                <div id="advancedOptions" class="hidden mt-4 p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="cuisineType" class="block text-sm font-medium text-gray-700 mb-1">Cuisine Type</label>
+                            <select id="cuisineType" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="">Any Cuisine</option>
+                                <option value="American">American</option>
+                                <option value="Asian">Asian</option>
+                                <option value="British">British</option>
+                                <option value="Caribbean">Caribbean</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="French">French</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Mediterranean">Mediterranean</option>
+                                <option value="Mexican">Mexican</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="mealType" class="block text-sm font-medium text-gray-700 mb-1">Meal Type</label>
+                            <select id="mealType" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="">Any Meal</option>
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <option value="Snack">Snack</option>
+                                <option value="Teatime">Teatime</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="diet" class="block text-sm font-medium text-gray-700 mb-1">Diet</label>
+                            <select id="diet" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="">Any Diet</option>
+                                <option value="balanced">Balanced</option>
+                                <option value="high-protein">High-Protein</option>
+                                <option value="low-carb">Low-Carb</option>
+                                <option value="low-fat">Low-Fat</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="health" class="block text-sm font-medium text-gray-700 mb-1">Health</label>
+                            <select id="health" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="">Any</option>
+                                <option value="alcohol-free">Alcohol-Free</option>
+                                <option value="peanut-free">Peanut-Free</option>
+                                <option value="sugar-conscious">Sugar-Conscious</option>
+                                <option value="tree-nut-free">Tree Nut Free</option>
+                                <option value="wheat-free">Wheat Free</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters Section -->
+        <section id="filters" class="mb-8 hidden">
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100" data-filter="all">All</button>
+                <button class="filter-btn px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100" data-filter="vegetarian">Vegetarian</button>
+                <button class="filter-btn px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100" data-filter="vegan">Vegan</button>
+                <button class="filter-btn px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100" data-filter="quick">Quick Meals</button>
+                <button class="filter-btn px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-100" data-filter="healthy">Healthy</button>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden text-center py-8">
+            <div class="loader ease-linear rounded-full border-4 border-gray-200 h-12 w-12 mx-auto mb-4"></div>
+            <p class="text-gray-600">Finding delicious recipes for you...</p>
+        </div>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-800" id="resultsCount">0 Recipes Found</h3>
+                <div class="flex items-center">
+                    <label for="sortBy" class="mr-2 text-sm text-gray-600">Sort by:</label>
+                    <select id="sortBy" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                        <option value="relevance">Relevance</option>
+                        <option value="calories">Calories</option>
+                        <option value="time">Cooking Time</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Recipe cards will be inserted here by JavaScript -->
+            </div>
+
+            <div id="noResults" class="hidden text-center py-12">
+                <img src="https://placehold.co/300x200" alt="Empty plate illustration indicating no results found" class="mx-auto mb-6" />
+                <h4 class="text-xl font-medium text-gray-700 mb-2">No Recipes Found</h4>
+                <p class="text-gray-500 max-w-md mx-auto">Try adjusting your search terms or filters to find more recipes.</p>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button id="loadMoreBtn" class="hidden bg-white border border-gray-300 text-gray-700 font-medium px-6 py-2 rounded-lg hover:bg-gray-50">
+                    Load More Recipes
+                </button>
+            </div>
+        </section>
+
+        <!-- Recipe Details Modal -->
+        <div id="recipeModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center overflow-y-auto">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 my-8 max-h-screen overflow-y-auto">
+                <div class="flex justify-end p-2">
+                    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div id="modalContent" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Modal content will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-600">© 2023 FlavorFinder. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Privacy Policy</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Terms of Service</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js">
+      
+    </script>
+</body>
+</html>
